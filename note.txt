@@ -1,0 +1,24 @@
+The URL new_note_spa that new notes are sent to, does not adhere to current best practices.
+
+part 1:
+backbonejs???
+- jsx: use babel to compile jsx (html) into javascript
+- jsx: every tag need to be closed
+- uppercase Component
+- do not render object
+- destructuring
+- chú ý truyền hàm myFunc và truyền hàm call myFunc(). VD: setTimeout
+- hàm update state là async -> phải xử lí async
+- có thể conditional rendering
+- debugger
+- dùng component debug của react
+- strict mode??
+- hook/state chỉ được gọi trong component function
+- ko được define coomponent inside component
+- egghead.io
+
+part2:
+- map must have key
+- use modules in component folders
+- effect hook: data fetching, changing DOM
+- It's also worth noting that the new object changedNote (const changedNote = { ...note, important: !note.important }) is only a so-called shallow copy, meaning that the values of the new object are the same as the values of the old object. If the values of the old object were objects themselves, then the copied values in the new object would reference the same objects that were in the old object.
