@@ -1,19 +1,35 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/notes'
+const baseUrl = 'http://localhost:3001/api/notes'
+let token = null
 
-async function getAll(){
-    const response = await axios.get(baseUrl)
-    return response
+function setToken(newToken) {
+    token = `Bearer ${newToken}`
+}
+function getAll() {
+    const request = axios.get(baseUrl)
+    return request.then(response => response.data)
 }
 
-async function create(newObject) {
-    const response = await axios.post(baseUrl, newObject)
-    return response
+function createNote(newObject) {
+    const config = {
+        headers: { Authorization: token },
+    }
+    const request = axios.post(baseUrl, newObject, config)
+    return request.then(response => response.data)
 }
 
-async function update(id, newObject){
-    const response = await axios.put(`${baseUrl}/${id}`, newObject)
-    return response
+function updateNote(id, newObject) {
+    const request = axios.patch(`${baseUrl}/${id}`, newObject)
+    return request.then(response => response.data)
 }
 
-export  {getAll,create,update}
+function deleteNote(id) {
+    const request = axios.delete(`${baseUrl}/${id}`)
+
+    return request.then(response => {
+        console.log(response)
+        return response.data
+    })
+}
+
+export { getAll, createNote, updateNote, deleteNote, setToken }

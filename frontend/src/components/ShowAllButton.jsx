@@ -1,5 +1,5 @@
-const ImportantButton = (props) => {
-    function handleShowAll(event){
+const ShowAllButton = (props) => {
+    function handleShowAll(event) {
         props.setShowAll(!props.showAll)
     }
     return (
@@ -9,4 +9,4 @@ const ImportantButton = (props) => {
     )
 }
 
-export {ImportantButton}
+export default ShowAllButton

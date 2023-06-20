@@ -22,3 +22,22 @@ part2:
 - use modules in component folders
 - effect hook: data fetching, changing DOM
 - It's also worth noting that the new object changedNote (const changedNote = { ...note, important: !note.important }) is only a so-called shallow copy, meaning that the values of the new object are the same as the values of the old object. If the values of the old object were objects themselves, then the copied values in the new object would reference the same objects that were in the old object.
+
+
+part3:
+- use commonjs 
+- app.get('/', (request, response) => {
+  response.send('<h1>Hello World!</h1>')
+})
+
+app.get('/api/notes', (request, response) => {
+  response.json(notes)
+})
+- SPREAD is USEFUL ->>>>> học SPREAD
+- middleware
+- xem lại CORS
+- làm catch error cuối part 3
+- requestLogger ??
+
+namkhafe
+postgres://etefietk:6Wl_po7z0NwgEnnRbjImud1tw25cErCH@john.db.elephantsql.com/etefietk
