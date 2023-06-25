@@ -21,9 +21,8 @@ const App = (props) => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [loginVisible, setLoginVisible] = useState(false)
-  // test
-  // console.log("user: ", user)
-  // effect
+  // ref
+  // const noteFormRef = useRef()
   useEffect(() => {
     console.log("use effect")
     noteService.getAll()
@@ -66,7 +65,6 @@ const App = (props) => {
       const user = await loginService.login({
         username, password,
       })
-
       window.sessionStorage.setItem(
         'loggedNoteappUser', JSON.stringify(user)
       )
@@ -162,4 +160,4 @@ const App = (props) => {
   )
 }
 
-export { App };
+export default App;
