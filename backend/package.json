@@ -16,9 +16,11 @@
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
+    "mssql": "^9.1.1",
     "pg": "^8.11.0",
     "sequelize": "^6.32.0",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "tedious": "^16.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

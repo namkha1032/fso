@@ -1,14 +1,18 @@
 // import libraries
 import { createSlice } from '@reduxjs/toolkit'
 const noteSlice = createSlice({
-    name: "note",
+    name: "notes",
     initialState: [],
     reducers: {
         setNotes(state, action){
             return action.payload
         },
-        appendNote(state, action){
-            return [...state, action.payload]
+        addNote(state, action){
+            const newNote = {
+                ...action.payload,
+                username: JSON.parse(window.localStorage.getItem("loggedNoteappUser")).username
+            }
+            return [...state, newNote]
 
         },
         changeImportance(state, action){
@@ -23,6 +27,15 @@ const noteSlice = createSlice({
         deleteNote(state, action){
             const noteToDelete = state.find(note => note.id == action.payload)
             return state.filter(note => note.id != noteToDelete.id)
+        },
+        changeContent(state, action){
+            const noteToChange = state.find(note => note.id == action.payload.id)
+            const changedNote = {
+                ...noteToChange,
+                content: action.payload.content
+            }
+            console.log(JSON.parse(JSON.stringify(state)))
+            return state.map(note => note.id == changedNote.id ? changedNote : note)
         }
     }
 })

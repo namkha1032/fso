@@ -39,6 +39,8 @@ notesRouter.delete('/:id', (request, response) => {
 })
 notesRouter.post('', async (request, response) => {
     const decodedToken = jwt.verify(getTokenFrom(request), "namkhadeptrai")
+    console.log("decodedToken: ", decodedToken)
+    console.log("decodedToken.username: ", decodedToken.username)
     if (!decodedToken.id) {
         return response.status(401).json({ error: 'token invalid' })
     }
@@ -55,9 +57,13 @@ notesRouter.post('', async (request, response) => {
     })
 })
 notesRouter.patch('/:id', (request, response) => {
+    console.log("request body: ", request.body)
+    console.log("request param: ", request.params)
+    console.log("request body content: ", request.body.content)
+    console.log("request body important: ", request.body.important)
     sql = `UPDATE notes SET content = '${request.body.content}', important = ${request.body.important} WHERE notes.id = ${request.params.id} RETURNING *;`
     db.all(sql, function (err, rows) {
-        console.log(err, rows)
+        console.log("rows is: ", rows)
         response.json(rows[0])
     })
 })

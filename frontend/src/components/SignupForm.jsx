@@ -2,8 +2,8 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-// import API
-import * as authenAPi from "../api/authen"
+// import services
+import * as SignupService from "../api/signup"
 const Notification = ({ message }) => {
     if (message === null) {
         return null
@@ -15,40 +15,39 @@ const Notification = ({ message }) => {
         </div>
     )
 }
-const LoginForm = (props) => {
+const SignupForm = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [roleid, setRoleid] = useState(0)
     const [errorMessage, setErrorMessage] = useState(null)
-    const [logging, setLogging] = useState(false)
-    const dispatch = useDispatch()
     const navigate = useNavigate()
-    async function handleLogin(event) {
+    async function handleSignup(event) {
         event.preventDefault()
-        setLogging(true)
+
         try {
-            // dispatch({ type: "saga/userLogin", payload: { username, password } })
-            // Gọi thẳng API ở đây thay vì thông qua saga để tiện catch error
-            const user = await authenAPi.loginAPI({ username, password })
-            dispatch({ type: "user/userLogin", payload: user })
-            window.localStorage.setItem(
-                'loggedNoteappUser', JSON.stringify(user)
-            )
+            const user = await SignupService.userSignup({
+                username, password, roleid
+            })
+            // window.localStorage.setItem(
+            //     'loggedNoteappUser', JSON.stringify(user)
+            // )
+            // noteService.setToken(user.token)
+            // setUser(user)
             setUsername('')
             setPassword('')
-            navigate(window.sessionStorage.getItem("currentpath"))
+            setRoleid(0)
+            navigate("/login")
         } catch (exception) {
-            console.log("exception is: ", exception)
             setErrorMessage('Wrong credentials')
             setTimeout(() => {
                 setErrorMessage(null)
             }, 5000)
         }
-        setLogging(false)
     }
     return (
         <>
             <Notification message={errorMessage} />
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSignup}>
                 <div>
                     username
                     <input
@@ -67,10 +66,17 @@ const LoginForm = (props) => {
                         onChange={(event) => { setPassword(event.target.value) }}
                     />
                 </div>
-                <div>{logging ? "loading..." : ""}</div>
-                <button type="submit">login</button>
+                <input type="radio" onClick={() => setRoleid(1)} />Admin
+                <br />
+                <input type="radio" onClick={() => setRoleid(2)} />Recruiter
+                <br />
+                <input type="radio" onClick={() => setRoleid(3)} />Interviewer
+                <br />
+                <input type="radio" onClick={() => setRoleid(4)} />Candidate
+                <br />
+                <button type="submit">signup</button>
             </form>
         </>
     )
 }
-export default LoginForm
+export default SignupForm
