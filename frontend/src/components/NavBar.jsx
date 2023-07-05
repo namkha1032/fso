@@ -2,7 +2,14 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom"
 // import reducers
-import userSlice from "../redux/reducers/userReducer"
+import userSlice from "../redux/reducer/userReducer"
+// Import MUI
+import {
+    AppBar,
+    Toolbar,
+    IconButton,
+    Button
+} from '@mui/material'
 const NavBar = () => {
     const dispatch = useDispatch()
     let user = useSelector(state => state.user)
@@ -15,18 +22,40 @@ const NavBar = () => {
     }
     return (
         <>
-            <Link style={{ padding: 5 }} to="/">home</Link>
-            <Link style={{ padding: 5 }} to="/notes">notes</Link>
-            <Link style={{ padding: 5 }} to="/users">users</Link>
-            {user == null
-                ? <>
-                    <Link style={{ padding: 5 }} to="/login" onClick={handleSaveURL}>login</Link>
-                    <Link style={{ padding: 5 }} to="/signup" onClick={handleSaveURL}>signup</Link>
-                </>
-                : <>
-                    <span style={{ padding: 5 }}>hello {user.username}</span>
-                    <span style={{ padding: 5 }} onClick={handleLogout}>Log out</span>
-                </>}
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                    </IconButton>
+                    <Button color="inherit">
+                        <Link to="/">home</Link>
+                    </Button>
+                    <Button color="inherit">
+                        <Link to="/notes">notes</Link>
+                    </Button>
+                    <Button color="inherit">
+                        <Link to="/users">users</Link>
+                    </Button>
+
+                    {user
+                        ?
+                        <>
+                            <em>Hello {user.username}</em>
+                            <Button color="inherit">
+                                <Link style={{ padding: 5 }} onClick={handleLogout}>Log out</Link>
+                            </Button>
+                        </>
+                        :
+                        <>
+                            <Button color="inherit">
+                                <Link to="/login" onClick={handleSaveURL}>login</Link>
+                            </Button>
+                            <Button color="inherit">
+                                <Link style={{ padding: 5 }} to="/signup" onClick={handleSaveURL}>signup</Link>
+                            </Button>
+                        </>
+                    }
+                </Toolbar>
+            </AppBar >
         </>
     )
 }

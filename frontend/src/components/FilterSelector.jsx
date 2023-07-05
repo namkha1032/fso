@@ -1,6 +1,6 @@
-// import { filterChange } from '../reducers/filterReducer'
+// import { filterChange } from '../reducer/filterReducer'
 import { useDispatch } from 'react-redux'
-import filterSlice from '../redux/reducers/filterReducer'
+import filterSlice from '../redux/reducer/filterReducer'
 const FilterSelector = () => {
     const dispatch = useDispatch()
     return (
@@ -8,18 +8,21 @@ const FilterSelector = () => {
             <input
                 type="radio"
                 name="filter"
-                onChange={() => dispatch(filterSlice.actions.changeFilter('ALL'))}
-            /><label>all</label><br/>
+                onChange={() => dispatch(filterSlice.actions.changeFilter("ALL"))}
+            // onChange={() => dispatch({type:"filter/changeFilter", payload: "ALL"})}
+            /><label>all</label><br />
             <input
                 type="radio"
                 name="filter"
                 onChange={() => dispatch(filterSlice.actions.changeFilter('IMPORTANT'))}
-            /><label>important</label><br/>
+            // onChange={() => dispatch({type:"filter/changeFilter", payload: "IMPORTANT"})}
+            /><label>important</label><br />
             <input
                 type="radio"
                 name="filter"
                 onChange={() => dispatch(filterSlice.actions.changeFilter('NONIMPORTANT'))}
-            /><label>non-important</label><br/>
+            // onChange={() => dispatch({type:"filter/changeFilter", payload: "NONIMPORTANT"})}
+            /><label>non-important</label><br />
         </>
     )
 }

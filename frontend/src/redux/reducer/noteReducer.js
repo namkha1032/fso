@@ -21,7 +21,7 @@ const noteSlice = createSlice({
                 ...noteToChange,
                 important: !noteToChange.important
             }
-            console.log(JSON.parse(JSON.stringify(state)))
+            // console.log(JSON.parse(JSON.stringify(state)))
             return state.map(note => note.id == changedNote.id ? changedNote : note)
         },
         deleteNote(state, action){
@@ -34,7 +34,7 @@ const noteSlice = createSlice({
                 ...noteToChange,
                 content: action.payload.content
             }
-            console.log(JSON.parse(JSON.stringify(state)))
+            // console.log(JSON.parse(JSON.stringify(state)))
             return state.map(note => note.id == changedNote.id ? changedNote : note)
         }
     }

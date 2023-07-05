@@ -1,18 +1,19 @@
 // import libraries
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-// import API
-import * as authenAPi from "../api/authen"
+import { Link, useNavigate, redirect } from 'react-router-dom'
+import axios from 'axios'
+// import MUI
+import { TextField, Button, Alert } from "@mui/material"
 const Notification = ({ message }) => {
     if (message === null) {
         return null
     }
 
     return (
-        <div className="error">
+        <Alert color="error">
             {message}
-        </div>
+        </Alert>
     )
 }
 const LoginForm = (props) => {
@@ -28,7 +29,10 @@ const LoginForm = (props) => {
         try {
             // dispatch({ type: "saga/userLogin", payload: { username, password } })
             // Gọi thẳng API ở đây thay vì thông qua saga để tiện catch error
-            const user = await authenAPi.loginAPI({ username, password })
+            // kiểu như nhập sai mật khẩu, server trả mã lỗi 401 về, mình catch lỗi đó để hiển thị thông báo lên màn hình
+            // nếu call API ở saga (như dòng 30) thì phải xử lý phức tạp hơn chút để xử lý được lỗi
+            const response = await axios.post('http://localhost:3001/api/login', { username, password })
+            const user = response.data
             dispatch({ type: "user/userLogin", payload: user })
             window.localStorage.setItem(
                 'loggedNoteappUser', JSON.stringify(user)
@@ -37,7 +41,6 @@ const LoginForm = (props) => {
             setPassword('')
             navigate(window.sessionStorage.getItem("currentpath"))
         } catch (exception) {
-            console.log("exception is: ", exception)
             setErrorMessage('Wrong credentials')
             setTimeout(() => {
                 setErrorMessage(null)
@@ -49,26 +52,25 @@ const LoginForm = (props) => {
         <>
             <Notification message={errorMessage} />
             <form onSubmit={handleLogin}>
-                <div>
-                    username
-                    <input
-                        type="text"
-                        value={username}
-                        name="Username"
-                        onChange={(event) => { setUsername(event.target.value) }}
-                    />
-                </div>
-                <div>
-                    password
-                    <input
-                        type="password"
-                        value={password}
-                        name="Password"
-                        onChange={(event) => { setPassword(event.target.value) }}
-                    />
-                </div>
+                <TextField
+                    type="text"
+                    value={username}
+                    label="username"
+                    onChange={(event) => { setUsername(event.target.value) }}
+                />
+                <br />
+                <br />
+                <TextField
+                    type="password"
+                    value={password}
+                    label="password"
+                    onChange={(event) => { setPassword(event.target.value) }}
+                />
+                <br />
+                <br />
                 <div>{logging ? "loading..." : ""}</div>
-                <button type="submit">login</button>
+                <Button variant="outlined" color="secondary" type="submit">login</Button>
+                <br />
             </form>
         </>
     )

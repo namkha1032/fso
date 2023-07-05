@@ -8,7 +8,6 @@ const CreateNoteForm = (props) => {
     // functions
     const handleAddNote = (event) => {
         event.preventDefault()
-        // dispatch(noteAPI.addNote({ content: newNote, important: true }))
         dispatch({ type: "saga/addNote", payload: { content: newNote, important: true } })
         setNewNote('')
     }
@@ -20,17 +19,11 @@ const CreateNoteForm = (props) => {
                 <textarea
                     value={newNote}
                     onChange={(event) => {
-                        console.log("newnote: ", newNote)
                         setNewNote(event.target.value)
                     }}
                 />
                 <button type="submit">save</button>
             </form>
-            {/* <NoteForm
-                handleSubmitAction={handleAddNote}
-                handleChangeAction={setNewNote}
-                value={newNote}>
-            </NoteForm> */}
         </div>
     )
 }

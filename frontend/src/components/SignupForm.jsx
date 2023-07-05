@@ -2,8 +2,8 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-// import services
-import * as SignupService from "../api/signup"
+import axios from 'axios'
+
 const Notification = ({ message }) => {
     if (message === null) {
         return null
@@ -25,20 +25,13 @@ const SignupForm = () => {
         event.preventDefault()
 
         try {
-            const user = await SignupService.userSignup({
-                username, password, roleid
-            })
-            // window.localStorage.setItem(
-            //     'loggedNoteappUser', JSON.stringify(user)
-            // )
-            // noteService.setToken(user.token)
-            // setUser(user)
+            const response = await axios.post('http://localhost:3001/api/users', { username, password, roleid })
             setUsername('')
             setPassword('')
             setRoleid(0)
             navigate("/login")
         } catch (exception) {
-            setErrorMessage('Wrong credentials')
+            setErrorMessage('Username exist')
             setTimeout(() => {
                 setErrorMessage(null)
             }, 5000)
@@ -66,13 +59,13 @@ const SignupForm = () => {
                         onChange={(event) => { setPassword(event.target.value) }}
                     />
                 </div>
-                <input type="radio" onClick={() => setRoleid(1)} />Admin
+                <input name="role" type="radio" onClick={() => setRoleid(1)} />Admin
                 <br />
-                <input type="radio" onClick={() => setRoleid(2)} />Recruiter
+                <input name="role" type="radio" onClick={() => setRoleid(2)} />Recruiter
                 <br />
-                <input type="radio" onClick={() => setRoleid(3)} />Interviewer
+                <input name="role" type="radio" onClick={() => setRoleid(3)} />Interviewer
                 <br />
-                <input type="radio" onClick={() => setRoleid(4)} />Candidate
+                <input name="role" type="radio" onClick={() => setRoleid(4)} />Candidate
                 <br />
                 <button type="submit">signup</button>
             </form>

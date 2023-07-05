@@ -15,42 +15,44 @@ import SignupPage from './pages/SignupPage'
 // import components
 import NavBar from "./components/NavBar"
 import Footer from './components/Footer'
-// import API
-import * as noteAPI from "./service/noteService"
+// import MUI
+import { Container } from '@mui/material'
+import '@fontsource/roboto/400.css';
 // import reducers
-import userSlice from "./redux/reducers/userReducer"
+import noteSlice from "./redux/reducer/noteReducer"
 const App = () => {
   // dispatch
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(noteAPI.initializeNotes())
+    dispatch({ type: "saga/initializeNotes" })
   }, [])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      // setUser(user)
       dispatch({ type: "user/userLogin", payload: user })
     }
   }, [])
   const user = useSelector(state => state.user)
   return (
-    <BrowserRouter>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />}></Route>
-        <Route path="/notes" element={<NotesPage />} />
-        <Route path="/notes/:id" element={<NotePage />} />
-        <Route path="/users"
-          element={user
-            ? <UsersPage />
-            : <Navigate replace to="/login" />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/signup" element={<SignupPage />} />
-      </Routes>
-      <Footer></Footer>
-    </BrowserRouter>
+    <Container>
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="/notes" element={<NotesPage />} />
+          <Route path="/notes/:id" element={<NotePage />} />
+          <Route path="/users"
+            element={user
+              ? <UsersPage />
+              : <Navigate replace to="/login" />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/signup" element={<SignupPage />} />
+        </Routes>
+        <Footer></Footer>
+      </BrowserRouter>
+    </Container>
   )
 }
 

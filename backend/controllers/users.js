@@ -20,20 +20,25 @@ usersRouter.post('/', async (request, response) => {
         passwordHash,
         roleid
     }
-    const sql1 = `SELECT * FROM users WHERE username = '${username}';`
-    db.all(sql1, function(err, rows){
-        if (rows.length > 0){
-            response.status(401).json({
-                error: "username has existed"
-            })
-        }
-    })
+    // const sql1 = `SELECT * FROM users WHERE username = '${username}';`
+    // db.all(sql1, function(err, rows){
+    //     if (rows.length > 0){
+    //         response.status(401).json({
+    //             error: "username has existed"
+    //         })
+    //     }
+    // })
     const sql = `INSERT INTO users(username, password, roleid) 
                     VALUES ('${user.username}', '${user.passwordHash}', ${user.roleid}) RETURNING *;`
     db.all(sql, function (err, rows) {
+        if(err){
+            response.status(404).json("")
+        }
+        else{
+            response.json(rows[0])
+        }
         console.log(err)
         console.log(rows)
-        response.status(201).json(rows[0])
     })
 })
 

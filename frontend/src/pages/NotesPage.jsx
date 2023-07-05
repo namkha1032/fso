@@ -8,8 +8,6 @@ import CreateNoteForm from '../components/CreateNoteForm'
 import NoteTable from '../components/NoteTable'
 import Togglable from '../components/Togglable'
 import HelloUser from '../components/HelloUser'
-// import services
-// import * as noteService from '../services/notes'
 // -----------------------------------App---------------------------------------
 const NotesPage = () => {
   // logic

@@ -2,11 +2,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 // import reducers
-import noteSlice from './reducers/noteReducer'
-import filterSlice from './reducers/filterReducer'
-import userSlice from './reducers/userReducer'
+import noteSlice from './reducer/noteReducer'
+import filterSlice from './reducer/filterReducer'
+import userSlice from './reducer/userReducer'
 // import rootSaga
-import rootSaga from '../sagas/rootSaga'
+import rootSaga from './saga/rootSaga'
 
 const sagaMiddleware = createSagaMiddleware()
 const store = configureStore({
