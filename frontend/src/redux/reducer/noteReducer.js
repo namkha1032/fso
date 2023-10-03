@@ -16,6 +16,7 @@ const noteSlice = createSlice({
 
         },
         changeImportance(state, action){
+            console.log("state: ", state)
             const noteToChange = state.find(note => note.id == action.payload)
             const changedNote = {
                 ...noteToChange,

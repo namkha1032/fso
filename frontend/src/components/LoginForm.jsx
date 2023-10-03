@@ -32,6 +32,7 @@ const LoginForm = (props) => {
             // kiểu như nhập sai mật khẩu, server trả mã lỗi 401 về, mình catch lỗi đó để hiển thị thông báo lên màn hình
             // nếu call API ở saga (như dòng 30) thì phải xử lý phức tạp hơn chút để xử lý được lỗi
             const response = await axios.post('http://localhost:3001/api/login', { username, password })
+            console.log("response: ", response)
             const user = response.data
             dispatch({ type: "user/userLogin", payload: user })
             window.localStorage.setItem(

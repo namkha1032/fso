@@ -9,9 +9,11 @@ import { useEffect } from 'react'
 import UsersPage from "./pages/UsersPage"
 import NotesPage from "./pages/NotesPage"
 import HomePage from "./pages/HomePage"
+import HomePage2 from "./pages/HomePage2"
 import NotePage from "./pages/NotePage"
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import TestPage from"./pages/TestPage"
 // import components
 import NavBar from "./components/NavBar"
 import Footer from './components/Footer'
@@ -35,7 +37,7 @@ const App = () => {
   }, [])
   const user = useSelector(state => state.user)
   return (
-    <Container>
+    
       <BrowserRouter>
         <NavBar />
         <Routes>
@@ -47,12 +49,13 @@ const App = () => {
             element={user
               ? <UsersPage />
               : <Navigate replace to="/login" />} />
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/home" element={<HomePage2 />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/test" element={<TestPage />} />
+          
         </Routes>
-        <Footer></Footer>
+        {/* <Footer></Footer> */}
       </BrowserRouter>
-    </Container>
   )
 }
 
