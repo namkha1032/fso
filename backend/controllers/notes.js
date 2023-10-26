@@ -12,6 +12,8 @@ const getTokenFrom = request => {
     return null
 }
 notesRouter.get('/', (request, response) => {
+    const date = new Date()
+    console.log(date.toLocaleString(), "--------------GETTTTTTTT--------------------")
     sql = `SELECT notes.id, notes.content, notes.important, notes.date, notes.userid, users.username 
            FROM notes INNER JOIN users ON notes.userid = users.id;`
     db.all(sql, async function (err, rows) {

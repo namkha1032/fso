@@ -14,7 +14,10 @@ import {
     TableRow,
     TableCell
 } from '@mui/material'
-const NoteTable = () => {
+const NoteTable = (props) => {
+    // props
+    const notes = props.notes
+    // redux
     const dispatch = useDispatch()
     let [searchParams, setSearchParams] = useSearchParams()
     useEffect(() => {
@@ -28,14 +31,15 @@ const NoteTable = () => {
             dispatch({ type: "filter/changeFilter", payload: "NONIMPORTANT" })
         }
     }, [])
-    const notesToShow = useSelector(state => {
-        if (state.filter == "ALL") {
-            return state.notes
-        }
-        return state.filter == "IMPORTANT"
-            ? state.notes.filter(note => note.important == true)
-            : state.notes.filter(note => note.important == false)
-    })
+    // const notesToShow = useSelector(state => {
+    //     if (state.filter == "ALL") {
+    //         return state.notes
+    //     }
+    //     return state.filter == "IMPORTANT"
+    //         ? state.notes.filter(note => note.important == true)
+    //         : state.notes.filter(note => note.important == false)
+    // })
+    const notesToShow = notes
     return (
         <>
             <TableContainer component={Paper}>

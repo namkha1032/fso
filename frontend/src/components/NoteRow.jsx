@@ -2,6 +2,9 @@
 import { useDispatch } from "react-redux"
 import { useState } from "react"
 import { Link } from 'react-router-dom'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+// import apis
+import { changeImportance } from "../api/noteapi"
 // import components
 import Button from "./Button"
 // import MUI
@@ -37,13 +40,20 @@ const UpdateForm = (props) => {
     )
 }
 const NoteRow = (props) => {
+    // react query
+    const queryClient = useQueryClient()
+    const importanceMutation = useMutation({
+        mutationFn: changeImportance,
+        onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["notes"] }) }
+    })
+    // redux
     const dispatch = useDispatch()
     // state
     let [updating, setUpdating] = useState(false)
     function handleImportance() {
         const changedNote = { ...props.note, important: !props.note.important } // shallow copy!!
-        // dispatch(noteAPI.changeImportance(changedNote))
-        dispatch({ type: "saga/changeImportance", payload: changedNote })
+        // dispatch({ type: "saga/changeImportance", payload: changedNote })
+        importanceMutation.mutate(changedNote)
     }
     function handleDeleteNote() {
         // dispatch(noteAPI.deleteNote(props.note.id))
