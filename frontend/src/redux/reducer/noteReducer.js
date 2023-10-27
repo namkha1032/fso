@@ -10,7 +10,7 @@ const noteSlice = createSlice({
         addNote(state, action){
             const newNote = {
                 ...action.payload,
-                username: JSON.parse(window.localStorage.getItem("loggedNoteappUser")).username
+                username: JSON.parse(window.localStorage.getItem("user")).username
             }
             return [...state, newNote]
 

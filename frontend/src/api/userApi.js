@@ -3,9 +3,9 @@ import axios from "axios";
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
-export async function getNotes() {
+export async function userLogin(credential) {
     await delay(1000)
-    let res = await axios.get('http://localhost:3001/api/notes')
+    let res = await axios.post('http://localhost:3001/api/login', credential)
     return res.data
 }
 

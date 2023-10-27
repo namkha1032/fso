@@ -2,6 +2,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useSearchParams } from "react-router-dom"
 import { useEffect } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 // import component
 import NoteRow from "./NoteRow"
 // import MUI
@@ -14,9 +15,9 @@ import {
     TableRow,
     TableCell
 } from '@mui/material'
-const NoteTable = (props) => {
-    // props
-    const notes = props.notes
+const NoteTable = () => {
+    const notesQuery = useQueryClient()
+    const notes = notesQuery.getQueryData(['notes'])
     // redux
     const dispatch = useDispatch()
     let [searchParams, setSearchParams] = useSearchParams()

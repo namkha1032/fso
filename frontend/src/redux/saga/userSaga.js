@@ -8,7 +8,7 @@ function* loginSaga(action) {
     try {
         const user = yield call(axios.post, 'http://localhost:3001/api/login', action.payload)
         window.localStorage.setItem(
-            'loggedNoteappUser', JSON.stringify(user)
+            'user', JSON.stringify(user)
         )
         yield put(userSlice.actions.userLogin(user))
         // yield put({ type: "user/userLogin", payload: user })
@@ -19,7 +19,7 @@ function* loginSaga(action) {
     }
 }
 function* logoutSaga() {
-    window.localStorage.removeItem('loggedNoteappUser')
+    window.localStorage.removeItem('user')
     yield put(userSlice.actions.userLogout(null))
     // yield put({ type: "user/userLogout", payload: null })
 }

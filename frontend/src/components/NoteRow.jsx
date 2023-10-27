@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 // import apis
-import { changeImportance } from "../api/noteapi"
+import { changeImportance } from "../api/noteApi"
 // import components
 import Button from "./Button"
 // import MUI

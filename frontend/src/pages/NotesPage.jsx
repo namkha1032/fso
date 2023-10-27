@@ -9,9 +9,7 @@ import NoteTable from '../components/NoteTable'
 import Togglable from '../components/Togglable'
 import HelloUser from '../components/HelloUser'
 // -----------------------------------App---------------------------------------
-const NotesPage = (props) => {
-  // props
-  const notes = props.notes
+const NotesPage = () => {
   // logic
   const user = useSelector(state => state.user)
   // HTMl
@@ -27,7 +25,7 @@ const NotesPage = (props) => {
         </>
       }
       <FilterSelector></FilterSelector>
-      <NoteTable notes={notes}></NoteTable>
+      <NoteTable></NoteTable>
     </>
   )
 }

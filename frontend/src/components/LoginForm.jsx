@@ -2,56 +2,44 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate, redirect } from 'react-router-dom'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { userLogin } from '../api/userApi'
 // import MUI
 import { TextField, Button, Alert } from "@mui/material"
-const Notification = ({ message }) => {
-    if (message === null) {
-        return null
-    }
 
-    return (
-        <Alert color="error">
-            {message}
-        </Alert>
-    )
-}
-const LoginForm = (props) => {
+const LoginForm = () => {
+    // states
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [errorMessage, setErrorMessage] = useState(null)
-    const [logging, setLogging] = useState(false)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    async function handleLogin(event) {
-        event.preventDefault()
-        setLogging(true)
-        try {
-            // dispatch({ type: "saga/userLogin", payload: { username, password } })
-            // Gọi thẳng API ở đây thay vì thông qua saga để tiện catch error
-            // kiểu như nhập sai mật khẩu, server trả mã lỗi 401 về, mình catch lỗi đó để hiển thị thông báo lên màn hình
-            // nếu call API ở saga (như dòng 30) thì phải xử lý phức tạp hơn chút để xử lý được lỗi
-            const response = await axios.post('http://localhost:3001/api/login', { username, password })
-            console.log("response: ", response)
-            const user = response.data
-            dispatch({ type: "user/userLogin", payload: user })
+    // react query
+    const queryClient = useQueryClient()
+
+    const userMutation = useMutation({
+        mutationFn: userLogin,
+        onSuccess: (userReturn) => {
             window.localStorage.setItem(
-                'loggedNoteappUser', JSON.stringify(user)
+                'user', JSON.stringify(userReturn)
             )
             setUsername('')
             setPassword('')
+            queryClient.setQueryData(['user'], userReturn)
             navigate(window.sessionStorage.getItem("currentpath"))
-        } catch (exception) {
-            setErrorMessage('Wrong credentials')
-            setTimeout(() => {
-                setErrorMessage(null)
-            }, 5000)
         }
-        setLogging(false)
+    })
+    const navigate = useNavigate()
+    async function handleLogin(event) {
+        event.preventDefault()
+        userMutation.mutate({ username, password })
     }
     return (
         <>
-            <Notification message={errorMessage} />
+            {userMutation.isError
+                ? <Alert color="error">
+                    Wrong credential!
+                </Alert>
+                : null
+            }
             <form onSubmit={handleLogin}>
                 <TextField
                     type="text"
@@ -69,7 +57,7 @@ const LoginForm = (props) => {
                 />
                 <br />
                 <br />
-                <div>{logging ? "loading..." : ""}</div>
+                <div>{userMutation.isPending ? "loading..." : ""}</div>
                 <Button variant="outlined" color="secondary" type="submit">login</Button>
                 <br />
             </form>

@@ -1,6 +1,7 @@
 // import libraries
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom"
+import { useQueryClient } from "@tanstack/react-query";
 // import reducers
 import userSlice from "../redux/reducer/userReducer"
 // Import MUI
@@ -12,13 +13,18 @@ import {
 } from '@mui/material'
 const NavBar = () => {
     const dispatch = useDispatch()
-    let user = useSelector(state => state.user)
+    // let user = window.localStorage.getItem("user")
+    // user = JSON.parse(user)
+    let queryClient = useQueryClient()
+    let user = queryClient.getQueryData(['user'])
+    console.log("user: ", user)
     function handleLogout() {
-        dispatch({ type: "saga/userLogout" })
+        window.localStorage.removeItem('user')
+        // queryClient.invalidateQueries({ queryKey: ['user'] })
+        queryClient.setQueryData(['user'], null)
     }
     function handleSaveURL() {
         window.sessionStorage.setItem("currentpath", window.location.pathname)
-
     }
     return (
         <>

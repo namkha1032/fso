@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux"
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { styled } from '@mui/system';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote } from "../api/noteapi";
+import { createNote } from "../api/noteApi";
 
 const CreateNoteForm = () => {
     // react query

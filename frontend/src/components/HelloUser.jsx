@@ -7,7 +7,7 @@ import userSlice from "../redux/reducer/userReducer"
 
 const HelloUser = () => {
     const username1 = useSelector(state => state.user.username)
-    // const username2 = JSON.parse(window.localStorage.getItem("loggedNoteappUser")).username
+    // const username2 = JSON.parse(window.localStorage.getItem("user")).username
     
     return (
         <>

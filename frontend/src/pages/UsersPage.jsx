@@ -1,9 +1,10 @@
-import { useSelector } from "react-redux"
+import { useQueryClient } from "@tanstack/react-query"
 const UsersPage = () => {
-    let user = useSelector(state => state.user)
+    let queryClient = useQueryClient()
+    let user = queryClient.getQueryData(['user'])
     return (
         <>
-            <h1>{user.username} Profile page</h1>
+            <h1>{user?.username} Profile page</h1>
         </>
     )
 }

@@ -11,7 +11,7 @@ function* initializeNotes() {
 }
 
 function* addNote(action) {
-    let userlocal = JSON.parse(window.localStorage.getItem("loggedNoteappUser"))
+    let userlocal = JSON.parse(window.localStorage.getItem("user"))
     let token = `Bearer ${userlocal.token}`
     const config = {
         headers: { Authorization: token },

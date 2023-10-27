@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 // import pages
 import UsersPage from "./pages/UsersPage"
@@ -25,36 +25,39 @@ import '@fontsource/roboto/400.css';
 // import reducers
 import noteSlice from "./redux/reducer/noteReducer"
 // import apis
-import { getNotes } from './api/noteapi'
+import { getNotes } from './api/noteApi'
 // ------------------------------------------------------------------------------------------------------
 const App = () => {
   // dispatch
   const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch({ type: "saga/initializeNotes" })
-  }, [])
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      dispatch({ type: "user/userLogin", payload: user })
-    }
-  }, [])
-  const user = useSelector(state => state.user)
 
+  // const user = useSelector(state => state.user)
+  useEffect(() => {
+    console.log("---------------MOUNT----------------")
+  }, [])
   // React Query
-  const result = useQuery({
+  const queryClient = useQueryClient()
+  const notes = useQuery({
     queryKey: ['notes'],
-    queryFn: getNotes,
-    staleTime: 2000
+    queryFn: getNotes
   })
-  console.log(JSON.parse(JSON.stringify(result)))
-
-  if (result.isPending) {
+  const user = useQuery({
+    queryKey: ['user'],
+    queryFn: () => {
+      const userJSON = window.localStorage.getItem('user')
+      if (userJSON) {
+        return JSON.parse(userJSON)
+      }
+      else {
+        return null
+      }
+    },
+    refetchOnWindowFocus: false
+  })
+  console.log(JSON.parse(JSON.stringify(notes)))
+  if (notes.isPending) {
     return <div>loading data...</div>
   }
-
-  const notes = result.data
   return (
 
     <BrowserRouter>
@@ -62,7 +65,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />}></Route>
-        <Route path="/notes" element={<NotesPage notes={notes} />} />
+        <Route path="/notes" element={<NotesPage />} />
         <Route path="/notes/:id" element={<NotePage />} />
         <Route path="/users"
           element={user
