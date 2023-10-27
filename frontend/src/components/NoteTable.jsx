@@ -15,23 +15,8 @@ import {
     TableRow,
     TableCell
 } from '@mui/material'
-const NoteTable = () => {
-    const notesQuery = useQueryClient()
-    const notes = notesQuery.getQueryData(['notes'])
-    // redux
-    const dispatch = useDispatch()
-    let [searchParams, setSearchParams] = useSearchParams()
-    useEffect(() => {
-        if (searchParams.get("show") == "all") {
-            dispatch({ type: "filter/changeFilter", payload: "ALL" })
-        }
-        else if (searchParams.get("show") == "important") {
-            dispatch({ type: "filter/changeFilter", payload: "IMPORTANT" })
-        }
-        else if (searchParams.get("show") == "nonimportant") {
-            dispatch({ type: "filter/changeFilter", payload: "NONIMPORTANT" })
-        }
-    }, [])
+const NoteTable = (props) => {
+    const notes = props.notes
     // const notesToShow = useSelector(state => {
     //     if (state.filter == "ALL") {
     //         return state.notes
@@ -57,7 +42,7 @@ const NoteTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {notesToShow.map(note => (
+                        {notesToShow?.map(note => (
                             <NoteRow key={note.id} note={note}></NoteRow>
                         ))}
                     </TableBody>

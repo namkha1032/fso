@@ -12,15 +12,12 @@ import {
     Button
 } from '@mui/material'
 const NavBar = () => {
-    const dispatch = useDispatch()
     // let user = window.localStorage.getItem("user")
     // user = JSON.parse(user)
     let queryClient = useQueryClient()
     let user = queryClient.getQueryData(['user'])
-    console.log("user: ", user)
     function handleLogout() {
         window.localStorage.removeItem('user')
-        // queryClient.invalidateQueries({ queryKey: ['user'] })
         queryClient.setQueryData(['user'], null)
     }
     function handleSaveURL() {

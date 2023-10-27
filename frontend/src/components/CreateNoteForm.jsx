@@ -12,20 +12,17 @@ const CreateNoteForm = () => {
     const queryClient = useQueryClient()
     const newNoteMutation = useMutation({
         mutationFn: createNote,
-        onSuccess: (newNote) => {
-            // queryClient.invalidateQueries({ queryKey: ['notes'] })
-            const notes = queryClient.getQueryData(['notes'])
-            queryClient.setQueryData(['notes'], notes.concat(newNote))
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['notes'] })
+            // const notes = queryClient.getQueryData(['notes'])
+            // queryClient.setQueryData(['notes'], notes.concat(newNote))
         }
     })
-    // redux
-    const dispatch = useDispatch()
     // state
     const [newNote, setNewNote] = useState('')
     // functions
     const handleAddNote = (event) => {
         event.preventDefault()
-        // dispatch({ type: "saga/addNote", payload: { content: newNote, important: true } })
         newNoteMutation.mutate({ content: newNote, important: true })
         setNewNote('')
     }

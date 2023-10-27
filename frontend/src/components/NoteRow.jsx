@@ -44,7 +44,10 @@ const NoteRow = (props) => {
     const queryClient = useQueryClient()
     const importanceMutation = useMutation({
         mutationFn: changeImportance,
-        onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["notes"] }) }
+        onSuccess: (res) => {
+            console.log("on sucess before------------------")
+            return queryClient.invalidateQueries({ queryKey: ["notes"] })
+        }
     })
     // redux
     const dispatch = useDispatch()
@@ -52,7 +55,6 @@ const NoteRow = (props) => {
     let [updating, setUpdating] = useState(false)
     function handleImportance() {
         const changedNote = { ...props.note, important: !props.note.important } // shallow copy!!
-        // dispatch({ type: "saga/changeImportance", payload: changedNote })
         importanceMutation.mutate(changedNote)
     }
     function handleDeleteNote() {
@@ -62,6 +64,7 @@ const NoteRow = (props) => {
     function handleToggleUpdateNote() {
         setUpdating(!updating)
     }
+    console.log("impo: ", JSON.parse(JSON.stringify(importanceMutation)))
     return (
         <>
             <TableRow>
@@ -70,7 +73,8 @@ const NoteRow = (props) => {
                 <TableCell>
                     <Button
                         content={props.note.important ? "true" : "false"}
-                        handleAction={handleImportance}>
+                        handleAction={handleImportance}
+                        disabled={importanceMutation.isPending ? true : false}>
                     </Button>
                 </TableCell>
                 <TableCell>{props.note.date}</TableCell>
@@ -78,13 +82,15 @@ const NoteRow = (props) => {
                 <TableCell>
                     <Button
                         content={updating ? "Cancel" : "Update"}
-                        handleAction={handleToggleUpdateNote}>
+                        handleAction={handleToggleUpdateNote}
+                        disabled={false}>
                     </Button>
                 </TableCell>
                 <TableCell>
                     <Button
                         content="Delete"
-                        handleAction={handleDeleteNote}>
+                        handleAction={handleDeleteNote}
+                        disabled={false}>
                     </Button>
                 </TableCell>
             </TableRow>

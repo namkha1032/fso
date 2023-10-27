@@ -1,17 +1,19 @@
 // import libraries
 import { useSelector, useDispatch } from "react-redux";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // import components
 import Button from "./Button"
 // import reducers
 import userSlice from "../redux/reducer/userReducer"
 
 const HelloUser = () => {
-    const username1 = useSelector(state => state.user.username)
-    // const username2 = JSON.parse(window.localStorage.getItem("user")).username
-    
+    const queryClient = useQueryClient()
+    const user = queryClient.getQueryData(['user'])
+    const username = user?.username
+
     return (
         <>
-            <p>Hello {username1}</p>
+            <p>Hello {username}</p>
         </>
     )
 }

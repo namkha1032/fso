@@ -36,12 +36,7 @@ const App = () => {
     console.log("---------------MOUNT----------------")
   }, [])
   // React Query
-  const queryClient = useQueryClient()
-  const notes = useQuery({
-    queryKey: ['notes'],
-    queryFn: getNotes
-  })
-  const user = useQuery({
+  let userQuery = useQuery({
     queryKey: ['user'],
     queryFn: () => {
       const userJSON = window.localStorage.getItem('user')
@@ -52,12 +47,9 @@ const App = () => {
         return null
       }
     },
+    initialData: null,
     refetchOnWindowFocus: false
   })
-  console.log(JSON.parse(JSON.stringify(notes)))
-  if (notes.isPending) {
-    return <div>loading data...</div>
-  }
   return (
 
     <BrowserRouter>
@@ -68,7 +60,7 @@ const App = () => {
         <Route path="/notes" element={<NotesPage />} />
         <Route path="/notes/:id" element={<NotePage />} />
         <Route path="/users"
-          element={user
+          element={userQuery.data
             ? <UsersPage />
             : <Navigate replace to="/login" />} />
         <Route path="/home" element={<HomePage2 />} />

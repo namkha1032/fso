@@ -20,6 +20,7 @@ export async function createNote(newNoteObj) {
 }
 
 export async function changeImportance(newNoteObj) {
+    await delay(1000)
     let res = await axios.patch(`http://localhost:3001/api/notes/${newNoteObj.id}`, newNoteObj)
     return res.data
 }
