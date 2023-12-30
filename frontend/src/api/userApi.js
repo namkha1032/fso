@@ -9,6 +9,12 @@ export async function userLogin(credential) {
     return res.data
 }
 
+export async function userSignup(credential) {
+    await delay(1000)
+    let res = await axios.post('http://localhost:3001/api/users', credential)
+    return res.data
+}
+
 export async function createNote(newNoteObj) {
     let userlocal = JSON.parse(window.localStorage.getItem("user"))
     let token = `Bearer ${userlocal.token}`

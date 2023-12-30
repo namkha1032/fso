@@ -1,5 +1,4 @@
 // import libraries
-import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query";
 // import reducers

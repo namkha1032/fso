@@ -1,16 +1,15 @@
 // import logo from './logo.svg';
 // import './App.css';
 // import library
-import { useSelector } from "react-redux"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"
 // import Components
 import FilterSelector from "../components/FilterSelector"
-import CreateNoteForm from '../components/CreateNoteForm'
 import NoteTable from '../components/NoteTable'
 import Togglable from '../components/Togglable'
 import HelloUser from '../components/HelloUser'
+import CrudNoteForm from "../components/CrudNoteForm"
 // import apis
-import { getNotes } from "../api/noteApi"
+import { getNotes, createNote } from "../api/noteApi.js"
 // -----------------------------------App---------------------------------------
 const NotesPage = () => {
   const queryClient = useQueryClient()
@@ -24,6 +23,13 @@ const NotesPage = () => {
       return res
     }
   })
+  const addNoteMutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      return queryClient.invalidateQueries(['notes'])
+    }
+  })
+  const isPending = addNoteMutation.isPending
   const notes = notesQuery.data
   // HTMl
   return (
@@ -33,7 +39,10 @@ const NotesPage = () => {
         <>
           <HelloUser />
           <Togglable buttonLabel="new note">
-            <CreateNoteForm />
+            <CrudNoteForm
+              note={{ content: "", important: true }}
+              crudNoteMutation={addNoteMutation}
+              isPending={isPending} />
           </Togglable>
         </>
       }

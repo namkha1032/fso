@@ -1,5 +1,4 @@
 // import libraries
-import { useDispatch, useSelector } from "react-redux"
 import { useSearchParams } from "react-router-dom"
 import { useEffect } from "react"
 import { useQueryClient } from "@tanstack/react-query"
@@ -16,7 +15,9 @@ import {
     TableCell
 } from '@mui/material'
 const NoteTable = (props) => {
-    const notes = props.notes
+    let queryClient = useQueryClient()
+    let filterValue = queryClient.getQueryData(['filter'])
+    let notes = props.notes
     // const notesToShow = useSelector(state => {
     //     if (state.filter == "ALL") {
     //         return state.notes
@@ -25,7 +26,16 @@ const NoteTable = (props) => {
     //         ? state.notes.filter(note => note.important == true)
     //         : state.notes.filter(note => note.important == false)
     // })
-    const notesToShow = notes
+    let notesToShow = null
+    if (filterValue == "ALL") {
+        notesToShow = notes
+    }
+    else if (filterValue == "IMPORTANT") {
+        notesToShow = notes.filter(note => note.important == true)
+    }
+    else if (filterValue == "NONIMPORTANT") {
+        notesToShow = notes.filter(note => note.important == false)
+    }
     return (
         <>
             <TableContainer component={Paper}>

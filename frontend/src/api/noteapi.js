@@ -9,6 +9,13 @@ export async function getNotes() {
     return res.data
 }
 
+export async function getOneNote(id) {
+    await delay(1000)
+    let res = await axios.get(`http://localhost:3001/api/notes/${id}`)
+    console.log("res: ", res.data)
+    return res.data
+}
+
 export async function createNote(newNoteObj) {
     let userlocal = JSON.parse(window.localStorage.getItem("user"))
     let token = `Bearer ${userlocal.token}`
@@ -19,8 +26,14 @@ export async function createNote(newNoteObj) {
     return res.data
 }
 
-export async function changeImportance(newNoteObj) {
+export async function updateNote(newNoteObj) {
     await delay(1000)
     let res = await axios.patch(`http://localhost:3001/api/notes/${newNoteObj.id}`, newNoteObj)
+    return res.data
+}
+
+export async function deleteNote(id) {
+    await delay(1000)
+    let res = await axios.delete(`http://localhost:3001/api/notes/${id}`)
     return res.data
 }

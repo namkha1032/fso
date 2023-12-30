@@ -1,80 +1,81 @@
 // import libraries
-import { useDispatch } from "react-redux"
 import { useState } from "react"
 import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 // import apis
-import { changeImportance } from "../api/noteApi"
+import { updateNote, deleteNote } from "../api/noteApi"
 // import components
 import Button from "./Button"
+import CrudNoteForm from "./CrudNoteForm"
 // import MUI
 import {
     TableRow,
     TableCell,
 } from '@mui/material'
 
-const UpdateForm = (props) => {
-    const dispatch = useDispatch()
-    let [newContent, setNewContent] = useState(props.note.content)
-    function handleUpdateNote(event) {
-        event.preventDefault()
-        const newObj = {
-            ...props.note,
-            content: newContent
-        }
-        // dispatch(noteAPI.updateNote(newObj))
-        dispatch({ type: "saga/updateNote", payload: newObj })
-        setNewContent("")
-        props.setUpdating(false)
-    }
-    return (
-        <>
-            <form onSubmit={handleUpdateNote}>
-                <input
-                    value={newContent}
-                    onChange={(event) => { setNewContent(event.target.value) }}
-                />
-                <button type="submit">save</button>
-            </form>
-        </>
-    )
-}
 const NoteRow = (props) => {
-    // react query
-    const queryClient = useQueryClient()
-    const importanceMutation = useMutation({
-        mutationFn: changeImportance,
-        onSuccess: (res) => {
-            console.log("on sucess before------------------")
-            return queryClient.invalidateQueries({ queryKey: ["notes"] })
-        }
-    })
-    // redux
-    const dispatch = useDispatch()
     // state
     let [updating, setUpdating] = useState(false)
+    // react query
+    const queryClient = useQueryClient()
+    const updateNoteMutation = useMutation({
+        mutationFn: updateNote,
+        onSuccess: async (res) => {
+            const noteToUpdate = await queryClient.getQueryData(["notes", res.id])
+            if (noteToUpdate) {
+                await queryClient.setQueryData(["notes", res.id], res)
+            }
+            await queryClient.invalidateQueries({ queryKey: ["notes"] })
+            return setUpdating(false)
+        }
+    })
+    const importanceNoteMutation = useMutation({
+        mutationFn: updateNote,
+        onSuccess: async (res) => {
+            const noteToUpdate = await queryClient.getQueryData(["notes", res.id])
+            if (noteToUpdate) {
+                await queryClient.setQueryData(["notes", res.id], res)
+            }
+            return await queryClient.invalidateQueries({ queryKey: ["notes"] })
+        }
+    })
+    const deleteNoteMutation = useMutation({
+        mutationFn: deleteNote,
+        onSuccess: async () => {
+            return await queryClient.invalidateQueries({ queryKey: ["notes"] })
+        }
+    })
+    const isPending = updateNoteMutation.isPending || importanceNoteMutation.isPending || deleteNoteMutation.isPending
+    // redux
     function handleImportance() {
         const changedNote = { ...props.note, important: !props.note.important } // shallow copy!!
-        importanceMutation.mutate(changedNote)
+        importanceNoteMutation.mutate(changedNote)
     }
     function handleDeleteNote() {
-        // dispatch(noteAPI.deleteNote(props.note.id))
-        dispatch({ type: "saga/deleteNote", payload: props.note.id })
+        deleteNoteMutation.mutate(props.note.id)
     }
     function handleToggleUpdateNote() {
         setUpdating(!updating)
     }
-    console.log("impo: ", JSON.parse(JSON.stringify(importanceMutation)))
     return (
         <>
             <TableRow>
                 <TableCell>{props.note.id}</TableCell>
-                <TableCell style={{ whiteSpace: 'pre-line' }}>{!updating ? <Link to={`/notes/${props.note.id}`}>{props.note.content}</Link> : <UpdateForm note={props.note} setUpdating={setUpdating}></UpdateForm>}</TableCell>
+                <TableCell style={{ whiteSpace: 'pre-line' }}>
+                    {!updating
+                        ? <Link to={`/notes/${props.note.id}`}>
+                            {props.note.content}
+                        </Link>
+                        : <CrudNoteForm
+                            note={props.note}
+                            crudNoteMutation={updateNoteMutation}
+                            isPending={isPending} />}
+                </TableCell>
                 <TableCell>
                     <Button
                         content={props.note.important ? "true" : "false"}
                         handleAction={handleImportance}
-                        disabled={importanceMutation.isPending ? true : false}>
+                        disabled={isPending ? true : false}>
                     </Button>
                 </TableCell>
                 <TableCell>{props.note.date}</TableCell>
@@ -83,14 +84,14 @@ const NoteRow = (props) => {
                     <Button
                         content={updating ? "Cancel" : "Update"}
                         handleAction={handleToggleUpdateNote}
-                        disabled={false}>
+                        disabled={isPending ? true : false}>
                     </Button>
                 </TableCell>
                 <TableCell>
                     <Button
                         content="Delete"
                         handleAction={handleDeleteNote}
-                        disabled={false}>
+                        disabled={isPending ? true : false}>
                     </Button>
                 </TableCell>
             </TableRow>

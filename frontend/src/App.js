@@ -3,7 +3,6 @@ import {
   BrowserRouter,
   Routes, Route, Link, Navigate
 } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
@@ -22,14 +21,8 @@ import Footer from './components/Footer'
 // import MUI
 import { Container } from '@mui/material'
 import '@fontsource/roboto/400.css';
-// import reducers
-import noteSlice from "./redux/reducer/noteReducer"
-// import apis
-import { getNotes } from './api/noteApi'
 // ------------------------------------------------------------------------------------------------------
 const App = () => {
-  // dispatch
-  const dispatch = useDispatch()
 
   // const user = useSelector(state => state.user)
   useEffect(() => {
@@ -49,6 +42,12 @@ const App = () => {
     },
     initialData: null,
     refetchOnWindowFocus: false
+  })
+  let filterQuery = useQuery({
+    queryKey: ['filter'],
+    queryFn: () => {
+      return "ALL"
+    }
   })
   return (
 

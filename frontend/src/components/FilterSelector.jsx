@@ -1,27 +1,24 @@
 // import { filterChange } from '../reducer/filterReducer'
-import { useDispatch } from 'react-redux'
+import { useQueryClient } from '@tanstack/react-query'
 import filterSlice from '../redux/reducer/filterReducer'
 const FilterSelector = () => {
-    const dispatch = useDispatch()
+    const queryClient = useQueryClient()
     return (
         <>
             <input
                 type="radio"
                 name="filter"
-                onChange={() => dispatch(filterSlice.actions.changeFilter("ALL"))}
-            // onChange={() => dispatch({type:"filter/changeFilter", payload: "ALL"})}
+                onChange={() => queryClient.setQueryData(['filter'], "ALL")}
             /><label>all</label><br />
             <input
                 type="radio"
                 name="filter"
-                onChange={() => dispatch(filterSlice.actions.changeFilter('IMPORTANT'))}
-            // onChange={() => dispatch({type:"filter/changeFilter", payload: "IMPORTANT"})}
+                onChange={() => queryClient.setQueryData(['filter'], "IMPORTANT")}
             /><label>important</label><br />
             <input
                 type="radio"
                 name="filter"
-                onChange={() => dispatch(filterSlice.actions.changeFilter('NONIMPORTANT'))}
-            // onChange={() => dispatch({type:"filter/changeFilter", payload: "NONIMPORTANT"})}
+                onChange={() => queryClient.setQueryData(['filter'], "NONIMPORTANT")}
             /><label>non-important</label><br />
         </>
     )

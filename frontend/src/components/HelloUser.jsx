@@ -1,5 +1,4 @@
 // import libraries
-import { useSelector, useDispatch } from "react-redux";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 // import components
 import Button from "./Button"
