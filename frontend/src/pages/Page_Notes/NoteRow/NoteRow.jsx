@@ -3,10 +3,10 @@ import { useState } from "react"
 import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 // import apis
-import { updateNote, deleteNote } from "../api/noteApi"
+import { updateNote, deleteNote } from "../../../api/noteApi"
 // import components
-import Button from "./Button"
-import CrudNoteForm from "./CrudNoteForm"
+import CustomizeButton from "../CustomizeButton/CustomizeButton"
+import CrudNoteForm from "../../../components/CrudNoteForm/CrudNoteForm"
 // import MUI
 import {
     TableRow,
@@ -72,27 +72,27 @@ const NoteRow = (props) => {
                             isPending={isPending} />}
                 </TableCell>
                 <TableCell>
-                    <Button
+                    <CustomizeButton
                         content={props.note.important ? "true" : "false"}
                         handleAction={handleImportance}
                         disabled={isPending ? true : false}>
-                    </Button>
+                    </CustomizeButton>
                 </TableCell>
                 <TableCell>{props.note.date}</TableCell>
                 <TableCell>{props.note.username}</TableCell>
                 <TableCell>
-                    <Button
+                    <CustomizeButton
                         content={updating ? "Cancel" : "Update"}
                         handleAction={handleToggleUpdateNote}
                         disabled={isPending ? true : false}>
-                    </Button>
+                    </CustomizeButton>
                 </TableCell>
                 <TableCell>
-                    <Button
+                    <CustomizeButton
                         content="Delete"
                         handleAction={handleDeleteNote}
                         disabled={isPending ? true : false}>
-                    </Button>
+                    </CustomizeButton>
                 </TableCell>
             </TableRow>
         </>

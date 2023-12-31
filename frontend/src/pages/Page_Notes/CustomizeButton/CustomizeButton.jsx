@@ -1,8 +1,8 @@
-const Button = (props) => {
+const CustomizeButton = (props) => {
     return (
         <>
             <button onClick={props.handleAction} disabled={props.disabled}>{props.content}</button>
         </>
     )
 }
-export default Button
+export default CustomizeButton

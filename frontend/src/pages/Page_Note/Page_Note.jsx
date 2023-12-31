@@ -2,8 +2,8 @@ import { useParams, useLocation } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useState } from "react"
 // import APIs
-import { getOneNote } from "../api/noteApi"
-const NotePage = () => {
+import { getOneNote } from "../../api/noteApi"
+const Page_Note = () => {
     const queryClient = useQueryClient()
     const noteId = useParams().id
     const getOneNoteQuery = useQuery({
@@ -21,24 +21,4 @@ const NotePage = () => {
     )
 }
 
-// const NotePage = () => {
-//     const [note, setNote] = useState(null)
-//     const noteId = useParams().id
-//     useEffect(() => {
-//         async function fetchNote() {
-//             let res = await getOneNote(noteId)
-//             console.log("ressss: ", res)
-//             setNote(res)
-//         }
-//         fetchNote()
-//     }, [])
-//     return (
-//         note
-//             ? <>
-//                 <h1>{note.content}</h1>
-//                 <p>{note.important}</p>
-//             </>
-//             : <p>loading...</p>
-//     )
-// }
-export default NotePage
+export default Page_Note

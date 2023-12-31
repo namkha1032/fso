@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate, redirect } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { userLogin } from '../api/userApi'
+import { userLogin } from '../../api/userApi'
 // import MUI
 import { TextField, Button, Alert } from "@mui/material"
 

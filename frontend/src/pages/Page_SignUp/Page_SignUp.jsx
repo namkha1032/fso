@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 // import apis
-import { userSignup } from '../api/userApi'
+import { userSignup } from '../../api/userApi'
 const SignupPage = () => {
     // states
     const [username, setUsername] = useState('')

@@ -1,6 +1,4 @@
-// import { filterChange } from '../reducer/filterReducer'
 import { useQueryClient } from '@tanstack/react-query'
-import filterSlice from '../redux/reducer/filterReducer'
 const FilterSelector = () => {
     const queryClient = useQueryClient()
     return (

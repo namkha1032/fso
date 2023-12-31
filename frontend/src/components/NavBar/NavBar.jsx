@@ -1,8 +1,6 @@
 // import libraries
 import { Link } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query";
-// import reducers
-import userSlice from "../redux/reducer/userReducer"
 // Import MUI
 import {
     AppBar,

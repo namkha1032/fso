@@ -3,13 +3,13 @@
 // import library
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"
 // import Components
-import FilterSelector from "../components/FilterSelector"
-import NoteTable from '../components/NoteTable'
-import Togglable from '../components/Togglable'
-import HelloUser from '../components/HelloUser'
-import CrudNoteForm from "../components/CrudNoteForm"
+import FilterSelector from "./FilterSelector/FilterSelector.jsx"
+import NoteTable from './NoteTable/NoteTable.jsx'
+import Togglable from './Togglable/Togglable.jsx'
+import HelloUser from './HelloUser/HelloUser.jsx'
+import CrudNoteForm from "../../components/CrudNoteForm/CrudNoteForm.jsx"
 // import apis
-import { getNotes, createNote } from "../api/noteApi.js"
+import { getNotes, createNote } from "../../api/noteApi.js"
 // -----------------------------------App---------------------------------------
 const NotesPage = () => {
   const queryClient = useQueryClient()

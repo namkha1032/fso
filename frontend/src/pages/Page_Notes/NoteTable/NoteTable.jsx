@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom"
 import { useEffect } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 // import component
-import NoteRow from "./NoteRow"
+import NoteRow from "../NoteRow/NoteRow"
 // import MUI
 import {
     Paper,
