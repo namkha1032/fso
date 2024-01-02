@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -12,12 +12,11 @@ export async function getNotes() {
 export async function getOneNote(id) {
     await delay(1000)
     let res = await axios.get(`http://localhost:3001/api/notes/${id}`)
-    console.log("res: ", res.data)
     return res.data
 }
 
 export async function createNote(newNoteObj) {
-    let userlocal = JSON.parse(window.localStorage.getItem("user"))
+    let userlocal = JSON.parse(window.localStorage.getItem('user'))
     let token = `Bearer ${userlocal.token}`
     const config = {
         headers: { Authorization: token },

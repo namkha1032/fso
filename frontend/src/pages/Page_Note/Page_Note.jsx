@@ -1,23 +1,32 @@
 import { useParams, useLocation } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useMemo, useState } from "react"
 // import APIs
-import { getOneNote } from "../../api/noteApi"
+import { getOneNote } from "../../apis/noteApi"
 const Page_Note = () => {
+    // props
+    // states
+    // hooks
     const queryClient = useQueryClient()
     const noteId = useParams().id
+    // queries
     const getOneNoteQuery = useQuery({
         queryKey: ["notes", parseInt(noteId)],
         queryFn: () => getOneNote(parseInt(noteId))
     })
-    console.log("onenote: ", getOneNoteQuery.data)
+    // mutations
+    // functions
+    // logics
+    const note = queryClient.getQueryData(['notes', parseInt(noteId)])
+    // HTMl
     return (
-        getOneNoteQuery.isLoading
-            ? <p>loading...</p>
-            : <>
-                <h1>{getOneNoteQuery.data.content}</h1>
-                <p>{getOneNoteQuery.data.important}</p>
+        note
+            ?
+            <>
+                <h1>{note.content}</h1>
+                <p>{note.important}</p>
             </>
+            :
+            <p>loading...</p>
     )
 }
 

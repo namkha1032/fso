@@ -1,9 +1,10 @@
 // import libraries
 import { useSearchParams } from "react-router-dom"
-import { useEffect } from "react"
-import { useQueryClient } from "@tanstack/react-query"
+import { useQueryClient, useMutation } from "@tanstack/react-query"
 // import component
 import NoteRow from "../NoteRow/NoteRow"
+// import api
+import { updateNote } from "../../../apis/noteApi"
 // import MUI
 import {
     Paper,
@@ -14,18 +15,18 @@ import {
     TableRow,
     TableCell
 } from '@mui/material'
-const NoteTable = (props) => {
+const NoteTable = () => {
+    console.log("render NoteTable")
+    // props
+    // states
+    // hooks
     let queryClient = useQueryClient()
+    // queries
+    // mutations
+    // functions
+    // logics
     let filterValue = queryClient.getQueryData(['filter'])
-    let notes = props.notes
-    // const notesToShow = useSelector(state => {
-    //     if (state.filter == "ALL") {
-    //         return state.notes
-    //     }
-    //     return state.filter == "IMPORTANT"
-    //         ? state.notes.filter(note => note.important == true)
-    //         : state.notes.filter(note => note.important == false)
-    // })
+    let notes = queryClient.getQueryData(['notes'])
     let notesToShow = null
     if (filterValue == "ALL") {
         notesToShow = notes
@@ -36,6 +37,7 @@ const NoteTable = (props) => {
     else if (filterValue == "NONIMPORTANT") {
         notesToShow = notes.filter(note => note.important == false)
     }
+    // HTMl
     return (
         <>
             <TableContainer component={Paper}>

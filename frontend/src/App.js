@@ -22,12 +22,8 @@ import '@fontsource/roboto/400.css';
 // ------------------------------------------------------------------------------------------------------
 // test
 const App = () => {
-
-  // const user = useSelector(state => state.user)
-  useEffect(() => {
-    console.log("---------------MOUNT----------------")
-  }, [])
-  // React Query
+  // query
+  console.log("render App")
   let userQuery = useQuery({
     queryKey: ['user'],
     queryFn: () => {
@@ -39,15 +35,10 @@ const App = () => {
         return null
       }
     },
-    initialData: null,
+    // initialData: null,
     refetchOnWindowFocus: false
   })
-  let filterQuery = useQuery({
-    queryKey: ['filter'],
-    queryFn: () => {
-      return "ALL"
-    }
-  })
+  
   return (
 
     <BrowserRouter>

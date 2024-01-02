@@ -2,33 +2,41 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
 // import apis
-import { userSignup } from '../../api/userApi'
+import { userSignup } from '../../apis/userApi'
+// import functions
+import delay from '../../functions/delay'
+// import MUI
+import { TextField, Button, Alert } from "@mui/material"
 const SignupPage = () => {
+    // props
     // states
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [roleid, setRoleid] = useState(0)
-    const [errorMessage, setErrorMessage] = useState(null)
+    // hooks
     const navigate = useNavigate()
+    // queries
     const userSignupMutation = useMutation({
-        mutationFn: userSignup,
-        onSuccess: () => {
-            setUsername('')
-            setPassword('')
-            setRoleid(0)
-            navigate("/login")
-        }
+        mutationFn: userSignup
     })
+    // functions
     async function handleSignup(event) {
         event.preventDefault()
-        userSignupMutation.mutate({ username, password, roleid })
+        try {
+            await userSignupMutation.mutateAsync({ username, password, roleid })
+            await delay(1000)
+            navigate('/login')
+        } catch (error) {
+            console.log('error: ', error)
+            await delay(2000)
+            userSignupMutation.reset()
+        }
     }
+    // logics
+    // HTML
     return (
         <>
-            {userSignupMutation.isError && <div className="error">Username exist</div>}
-            {userSignupMutation.isPending && <p>loading...</p>}
             <form onSubmit={handleSignup}>
                 <div>
                     username
@@ -57,6 +65,13 @@ const SignupPage = () => {
                 <input name="role" type="radio" onClick={() => setRoleid(4)} />Candidate
                 <br />
                 <button type="submit">signup</button>
+                {userSignupMutation.isPending && <p>loading...</p>}
+                {userSignupMutation.isError && <Alert color="error">
+                    Username exist!
+                </Alert>}
+                {userSignupMutation.isSuccess && <Alert color="success">
+                    Login successfully!!
+                </Alert>}
             </form>
         </>
     )

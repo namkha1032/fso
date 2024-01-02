@@ -4,35 +4,39 @@ import { useState } from "react"
 const CrudNoteForm = (props) => {
     // props
     let crudNoteMutation = props.crudNoteMutation
-    let isPending = props.isPending
     let note = props.note
-    // states
+    // state
     let [newContent, setNewContent] = useState(note.content)
-    // functions
-    function handleCrudNote(event) {
+    // hook
+    // query
+    // mutation
+    // function
+    async function handleCrudNote(event) {
         event.preventDefault()
         const newObj = {
             ...note,
             content: newContent
         }
-        crudNoteMutation.mutate(newObj)
+        try {
+            await crudNoteMutation.mutateAsync(newObj)
+            setNewContent('')
+        } catch (error) {
+
+        }
     }
-    // HTML
+    // logic
+    // HTMl
     return (
         <>
             <form onSubmit={handleCrudNote}>
                 <input
                     value={newContent}
                     onChange={(event) => { setNewContent(event.target.value) }}
-                    disabled={isPending ? true : false}
+                    disabled={crudNoteMutation.isPending ? true : false}
                 />
-                <button type="submit" disabled={isPending ? true : false}>save</button>
+                <button type="submit" disabled={crudNoteMutation.isPending ? true : false}>save</button>
             </form>
         </>
     )
 }
-
-
-
-
 export default CrudNoteForm

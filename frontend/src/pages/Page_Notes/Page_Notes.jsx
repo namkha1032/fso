@@ -2,19 +2,31 @@
 // import './App.css';
 // import library
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"
+import { useSearchParams } from "react-router-dom"
 // import Components
 import FilterSelector from "./FilterSelector/FilterSelector.jsx"
 import NoteTable from './NoteTable/NoteTable.jsx'
 import Togglable from './Togglable/Togglable.jsx'
 import HelloUser from './HelloUser/HelloUser.jsx'
 import CrudNoteForm from "../../components/CrudNoteForm/CrudNoteForm.jsx"
+
 // import apis
-import { getNotes, createNote } from "../../api/noteApi.js"
+import { getNotes, createNote } from "../../apis/noteApi.js"
 // -----------------------------------App---------------------------------------
-const NotesPage = () => {
+
+const Page_Notes = () => {
+  console.log("render Page_Notes")
+  // props
+  // states
+  // hooks
   const queryClient = useQueryClient()
-  const user = queryClient.getQueryData(['user'])
-  // API Call
+  // queries
+  let filterQuery = useQuery({
+    queryKey: ['filter'],
+    queryFn: () => {
+      return "ALL"
+    }
+  })
   const notesQuery = useQuery({
     queryKey: ['notes'],
     queryFn: getNotes,
@@ -23,37 +35,41 @@ const NotesPage = () => {
       return res
     }
   })
+  // mutations
   const addNoteMutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
       return queryClient.invalidateQueries(['notes'])
     }
   })
-  const isPending = addNoteMutation.isPending
-  const notes = notesQuery.data
+  // function
+  // logic
   // HTMl
   return (
     <>
       <h1>Note Page</h1>
-      {user !== null &&
+      {queryClient.getQueryData(['user']) !== null &&
         <>
           <HelloUser />
           <Togglable buttonLabel="new note">
             <CrudNoteForm
               note={{ content: "", important: true }}
-              crudNoteMutation={addNoteMutation}
-              isPending={isPending} />
+              crudNoteMutation={addNoteMutation} />
           </Togglable>
         </>
       }
-      <FilterSelector />
-
-      {notesQuery.isLoading
-        ? <p>Loading...</p>
-        : <NoteTable notes={notes}></NoteTable>
+      {
+        queryClient.getQueryData(['notes'])
+          ?
+          <>
+            <FilterSelector />
+            <NoteTable />
+          </>
+          :
+          <p>loading...</p>
       }
     </>
   )
 }
 
-export default NotesPage;
+export default Page_Notes;
